@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Email Verification - Rotation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 20px;
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        h1 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        p {
+            color: #666;
+            margin: 0 0 30px 0;
+            line-height: 1.5;
+        }
+        .btn {
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .loading {
+            display: none;
+        }
+        .success {
+            color: #22c55e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎓</div>
+        <h1>Verifying Your College Email</h1>
+        <p>Please wait while we verify your college email address...</p>
+
+        <div id="loading" class="loading">
+            <p>⏳ Processing verification...</p>
+        </div>
+
+        <div id="success" class="success" style="display: none;">
+            <p>✅ College email verified!</p>
+            <p>You now have a student badge in Rotation.</p>
+            <br>
+            <a href="rotation://verify-college-email" class="btn">Open Rotation App</a>
+        </div>
+
+        <div id="error" style="display: none;">
+            <p style="color: #ef4444;">❌ Verification failed</p>
+            <p style="color: #666; font-size: 14px;">The link may have expired. Please try again from the app.</p>
+            <br>
+            <a href="rotation://profile" class="btn">Open Rotation App</a>
+        </div>
+    </div>
+
+    <script>
+        // Get the token from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+
+            // Call your Supabase function to verify the token
+            fetch('https://wuzgvyefilvaiuowxekx.supabase.co/functions/v1/verify-college-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1emd2eWVmaWx2YWl1b3d4ZWt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MjI1NjcsImV4cCI6MjA4MTQ5ODU2N30.4oHdort5lQhTVdCOX24ohPQmxyAwb7A6N8NMw4ZBhSw'
+                },
+                body: JSON.stringify({ token: token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                if (data.success) {
+                    document.getElementById('success').style.display = 'block';
+                } else {
+                    document.getElementById('error').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            });
+        } else {
+            document.getElementById('error').style.display = 'block';
+        }
+
+        // Auto redirect to app after 3 seconds on success
+        setTimeout(() => {
+            if (document.getElementById('success').style.display !== 'none') {
+                window.location.href = 'rotation://verify-college-email?token=' + token;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
