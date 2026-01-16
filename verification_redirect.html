@@ -106,12 +106,11 @@
             // Show loading
             document.getElementById('loading').style.display = 'block';
 
-            // Call your Supabase function to verify the token
-            fetch('https://wuzgvyefilvaiuowxekx.supabase.co/functions/v1/verify-college-email', {
+            // Call your Supabase function to verify the token (public endpoint)
+            fetch('https://wuzgvyefilvaiuowxekx.supabase.co/functions/v1/verify-college-token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1emd2eWVmaWx2YWl1b3d4ZWt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MjI1NjcsImV4cCI6MjA4MTQ5ODU2N30.4oHdort5lQhTVdCOX24ohPQmxyAwb7A6N8NMw4ZBhSw'
                 },
                 body: JSON.stringify({ token: token })
             })
