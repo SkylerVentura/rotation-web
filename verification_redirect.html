@@ -86,7 +86,7 @@
             <p>✅ College email verified!</p>
             <p>You now have a student badge in Rotation.</p>
             <br>
-            <a href="rotation://verify-college-email" class="btn">Open Rotation App</a>
+            <a href="rotation://profile" class="btn">Open Rotation App</a>
         </div>
 
         <div id="error" style="display: none;">
@@ -132,9 +132,11 @@
         }
 
         // Auto redirect to app after 3 seconds on success
+        // Note: We redirect to profile (not verify-college-email) because the token
+        // is already verified and deleted. The app just needs to refresh the user profile.
         setTimeout(() => {
             if (document.getElementById('success').style.display !== 'none') {
-                window.location.href = 'rotation://verify-college-email?token=' + token;
+                window.location.href = 'rotation://profile?verified=true';
             }
         }, 3000);
     </script>
