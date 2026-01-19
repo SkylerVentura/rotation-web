@@ -613,9 +613,9 @@
             }
 
             try {
-                // Fetch item with owner profile
-                const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/clothing_items?id=eq.${itemId}&select=*,profiles!clothing_items_owner_id_fkey(id,first_name,last_name,profile_picture,seller_rating,total_seller_reviews,total_rentals)`,
+                // Fetch item data from Supabase
+                const itemResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/clothing_items?id=eq.${itemId}&select=*`,
                     {
                         headers: {
                             'apikey': SUPABASE_ANON_KEY,
@@ -624,16 +624,42 @@
                     }
                 );
 
-                const data = await response.json();
+                const itemData = await itemResponse.json();
                 
-                if (!data || data.length === 0) {
+                // Validate response - must be an array with at least one item
+                if (!itemData || !Array.isArray(itemData) || itemData.length === 0) {
                     showError();
                     return;
                 }
 
-                displayItem(data[0]);
+                const item = itemData[0];
+                
+                // Fetch owner profile separately using owner_id
+                let owner = null;
+                if (item.owner_id) {
+                    try {
+                        const ownerResponse = await fetch(
+                            `${SUPABASE_URL}/rest/v1/profiles?id=eq.${item.owner_id}&select=id,first_name,last_name,profile_picture,seller_rating,total_seller_reviews,total_rentals`,
+                            {
+                                headers: {
+                                    'apikey': SUPABASE_ANON_KEY,
+                                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                                }
+                            }
+                        );
+                        const ownerData = await ownerResponse.json();
+                        if (Array.isArray(ownerData) && ownerData.length > 0) {
+                            owner = ownerData[0];
+                        }
+                    } catch (e) {
+                        // Owner fetch failed - continue without owner info
+                    }
+                }
+                
+                // Attach owner and render the item
+                item.owner = owner;
+                displayItem(item);
             } catch (error) {
-                console.error('Error fetching item:', error);
                 showError();
             }
         }
@@ -680,8 +706,9 @@
             // Description
             document.getElementById('item-description').textContent = item.description || '';
 
-            // Owner info
-            const owner = item.profiles;
+            // Owner info - use item.owner (fetched separately)
+            const owner = item.owner;
+            const ownerSection = document.querySelector('.owner-section');
             if (owner) {
                 const avatarEl = document.getElementById('owner-avatar');
                 if (owner.profile_picture) {
@@ -704,6 +731,11 @@
                     stats.push('New seller');
                 }
                 document.getElementById('owner-stats').textContent = stats.join(' · ');
+            } else {
+                // Hide owner section if no owner data
+                if (ownerSection) {
+                    ownerSection.style.display = 'none';
+                }
             }
 
             // Update meta tags for social sharing
