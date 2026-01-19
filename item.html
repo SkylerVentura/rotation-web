@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Dynamic meta tags will be updated by JavaScript -->
+    <title>Check out this item on Rotation</title>
+    <meta name="description" content="Rent designer fashion, skip the price tag. Check out this item on Rotation.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" id="og-url" content="">
+    <meta property="og:title" id="og-title" content="Check out this item on Rotation">
+    <meta property="og:description" id="og-description" content="Rent designer fashion, skip the price tag.">
+    <meta property="og:image" id="og-image" content="">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" id="twitter-url" content="">
+    <meta property="twitter:title" id="twitter-title" content="Check out this item on Rotation">
+    <meta property="twitter:description" id="twitter-description" content="Rent designer fashion, skip the price tag.">
+    <meta property="twitter:image" id="twitter-image" content="">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔄</text></svg>">
+    
+    <style>
+        /* ============================================
+           RESET & BASE STYLES
+           Apple-inspired minimal design
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, #FDF2F8 0%, #FFFFFF 50%);
+            min-height: 100vh;
+            color: #1F2937;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================
+           HEADER / BRAND BAR
+           ============================================ */
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-cta {
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .header-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(233, 30, 140, 0.3);
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px 20px 100px;
+        }
+
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            gap: 16px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #F3F4F6;
+            border-top-color: #E91E8C;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: #6B7280;
+            font-size: 15px;
+        }
+
+        /* ============================================
+           ERROR STATE
+           ============================================ */
+        .error {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .error-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .error-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .error-message {
+            color: #6B7280;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           ITEM CARD
+           ============================================ */
+        .item-card {
+            display: none;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Image Section */
+        .item-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: #F3F4F6;
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Content Section */
+        .item-content {
+            padding: 24px;
+        }
+        
+        /* Price Tags */
+        .price-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .price-tag {
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .price-tag.rental {
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            color: white;
+        }
+        
+        .price-tag.buy {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .price-tag.buy::before {
+            content: "🏷️";
+            font-size: 14px;
+        }
+        
+        /* Title & Brand */
+        .item-title {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        
+        .item-brand {
+            font-size: 17px;
+            color: #6B7280;
+            margin-bottom: 20px;
+        }
+        
+        /* Quick Info Pills */
+        .item-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .item-pill {
+            background: #F3F4F6;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .item-pill-icon {
+            font-size: 14px;
+        }
+        
+        /* Description */
+        .item-description {
+            color: #6B7280;
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        
+        /* Owner Section */
+        .owner-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: #F9FAFB;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .owner-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        
+        .owner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .owner-info {
+            flex: 1;
+        }
+        
+        .owner-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .owner-stats {
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        /* ============================================
+           CTA BUTTONS
+           ============================================ */
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .cta-primary {
+            background: linear-gradient(135deg, #E91E8C 0%, #F472B6 100%);
+            color: white;
+            border: none;
+            padding: 18px 24px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(233, 30, 140, 0.35);
+        }
+        
+        .cta-secondary {
+            background: #F3F4F6;
+            color: #374151;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        
+        .cta-secondary:hover {
+            background: #E5E7EB;
+        }
+
+        /* ============================================
+           APP STORE BADGES
+           ============================================ */
+        .app-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .app-badge {
+            height: 44px;
+            transition: transform 0.2s;
+        }
+        
+        .app-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding: 32px 20px;
+            color: #9CA3AF;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #E91E8C;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 480px) {
+            .header-cta {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            
+            .item-title {
+                font-size: 22px;
+            }
+            
+            .price-tag {
+                font-size: 16px;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         HEADER
+         ============================================ -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">R</div>
+                <span class="logo-text">Rotation</span>
+            </a>
+            <a href="rotation://" class="header-cta">Open App</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading item details...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error" class="error">
+            <div class="error-icon">😕</div>
+            <h2 class="error-title">Item Not Found</h2>
+            <p class="error-message">
+                This item may have been removed or the link is invalid.<br>
+                Check out other amazing items in the Rotation app!
+            </p>
+            <a href="rotation://" class="cta-primary">
+                <span>🔄</span> Open Rotation
+            </a>
+        </div>
+
+        <!-- Item Card -->
+        <div id="item-card" class="item-card">
+            <!-- Image -->
+            <div class="item-image-container">
+                <img id="item-image" class="item-image" src="" alt="Item image">
+                <span id="item-condition" class="item-badge"></span>
+            </div>
+
+            <!-- Content -->
+            <div class="item-content">
+                <!-- Prices -->
+                <div class="price-tags">
+                    <span id="rental-price" class="price-tag rental"></span>
+                    <span id="buy-price" class="price-tag buy" style="display: none;"></span>
+                </div>
+
+                <!-- Title & Brand -->
+                <h1 id="item-title" class="item-title"></h1>
+                <p id="item-brand" class="item-brand"></p>
+
+                <!-- Quick Info -->
+                <div class="item-pills">
+                    <span id="item-size" class="item-pill">
+                        <span class="item-pill-icon">📏</span>
+                        <span></span>
+                    </span>
+                    <span id="item-category" class="item-pill">
+                        <span class="item-pill-icon">👗</span>
+                        <span></span>
+                    </span>
+                </div>
+
+                <!-- Description -->
+                <p id="item-description" class="item-description"></p>
+
+                <!-- Owner -->
+                <div class="owner-section">
+                    <div id="owner-avatar" class="owner-avatar"></div>
+                    <div class="owner-info">
+                        <p id="owner-name" class="owner-name"></p>
+                        <p id="owner-stats" class="owner-stats"></p>
+                    </div>
+                </div>
+
+                <!-- CTAs -->
+                <div class="cta-section">
+                    <a id="open-app-btn" href="" class="cta-primary">
+                        <span>👗</span> View in Rotation App
+                    </a>
+                    <a href="#download" class="cta-secondary">
+                        Don't have the app? Download free →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Store Badges -->
+        <div id="download" class="app-badges">
+            <a href="https://apps.apple.com/app/rotation/id123456789" target="_blank">
+                <img class="app-badge" src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.rotation.app" target="_blank">
+                <img class="app-badge" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height: 64px; margin: -10px 0;">
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Rent designer fashion. Skip the price tag. 🔄</p>
+        <p style="margin-top: 8px;">
+            <a href="rotation://">Open App</a> · 
+            <a href="https://rotation.com/privacy">Privacy</a> · 
+            <a href="https://rotation.com/terms">Terms</a>
+        </p>
+    </footer>
+
+    <script>
+        // ============================================
+        // SUPABASE CONFIG
+        // Using public anon key for read-only access
+        // ============================================
+        const SUPABASE_URL = 'https://wuzgvyefilvaiuowxekx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1emd2eWVmaWx2YWl1b3d4ZWt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MjI1NjcsImV4cCI6MjA4MTQ5ODU2N30.4oHdort5lQhTVdCOX24ohPQmxyAwb7A6N8NMw4ZBhSw';
+
+        // ============================================
+        // GET ITEM ID FROM URL
+        // ============================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        // Format price string
+        function formatPrice(price) {
+            return `$${Math.round(price)}`;
+        }
+        
+        // Get initials from name
+        function getInitials(firstName, lastName) {
+            return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase() || '?';
+        }
+        
+        // Format condition display
+        function formatCondition(condition) {
+            const conditions = {
+                'new_with_tags': 'New with tags',
+                'like_new': 'Like new',
+                'excellent': 'Excellent',
+                'good': 'Good',
+                'fair': 'Fair'
+            };
+            return conditions[condition] || condition;
+        }
+
+        // ============================================
+        // FETCH ITEM DATA
+        // ============================================
+        async function fetchItem() {
+            if (!itemId) {
+                showError();
+                return;
+            }
+
+            try {
+                // Fetch item with owner profile
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/clothing_items?id=eq.${itemId}&select=*,profiles!clothing_items_owner_id_fkey(id,first_name,last_name,profile_picture,seller_rating,total_seller_reviews,total_rentals)`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+                
+                if (!data || data.length === 0) {
+                    showError();
+                    return;
+                }
+
+                displayItem(data[0]);
+            } catch (error) {
+                console.error('Error fetching item:', error);
+                showError();
+            }
+        }
+
+        // ============================================
+        // DISPLAY ITEM
+        // ============================================
+        function displayItem(item) {
+            // Hide loading, show card
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('item-card').style.display = 'block';
+
+            // Set deep link URL for buttons
+            const deepLink = `rotation://item/${itemId}`;
+            document.getElementById('open-app-btn').href = deepLink;
+            document.querySelector('.header-cta').href = deepLink;
+
+            // Image
+            const images = item.images || [];
+            const imageUrl = images.length > 0 ? images[0].url : '';
+            document.getElementById('item-image').src = imageUrl;
+            document.getElementById('item-image').alt = item.title;
+
+            // Condition badge
+            document.getElementById('item-condition').textContent = formatCondition(item.condition);
+
+            // Prices
+            document.getElementById('rental-price').textContent = `${formatPrice(item.daily_rate)}/day`;
+            
+            if (item.buy_now_enabled && item.buy_now_price) {
+                document.getElementById('buy-price').style.display = 'flex';
+                document.getElementById('buy-price').textContent = formatPrice(item.buy_now_price);
+            }
+
+            // Title & Brand
+            document.getElementById('item-title').textContent = item.title;
+            document.getElementById('item-brand').textContent = item.brand || '';
+            document.getElementById('item-brand').style.display = item.brand ? 'block' : 'none';
+
+            // Quick info pills
+            document.querySelector('#item-size span:last-child').textContent = `Size ${item.size}`;
+            document.querySelector('#item-category span:last-child').textContent = item.category;
+
+            // Description
+            document.getElementById('item-description').textContent = item.description || '';
+
+            // Owner info
+            const owner = item.profiles;
+            if (owner) {
+                const avatarEl = document.getElementById('owner-avatar');
+                if (owner.profile_picture) {
+                    avatarEl.innerHTML = `<img src="${owner.profile_picture}" alt="${owner.first_name}">`;
+                } else {
+                    avatarEl.textContent = getInitials(owner.first_name, owner.last_name);
+                }
+                
+                document.getElementById('owner-name').textContent = `${owner.first_name} ${owner.last_name}`;
+                
+                // Build stats string
+                let stats = [];
+                if (owner.seller_rating > 0) {
+                    stats.push(`⭐ ${owner.seller_rating.toFixed(1)} (${owner.total_seller_reviews})`);
+                }
+                if (owner.total_rentals > 0) {
+                    stats.push(`${owner.total_rentals} rentals`);
+                }
+                if (stats.length === 0) {
+                    stats.push('New seller');
+                }
+                document.getElementById('owner-stats').textContent = stats.join(' · ');
+            }
+
+            // Update meta tags for social sharing
+            updateMetaTags(item, imageUrl);
+        }
+
+        // ============================================
+        // UPDATE META TAGS FOR RICH SHARING
+        // ============================================
+        function updateMetaTags(item, imageUrl) {
+            const title = item.brand 
+                ? `${item.brand} ${item.title} - Rotation`
+                : `${item.title} - Rotation`;
+            const description = `${formatPrice(item.daily_rate)}/day to rent • Size ${item.size} • ${formatCondition(item.condition)}`;
+            const url = window.location.href;
+
+            // Update page title
+            document.title = title;
+
+            // Update OG tags
+            document.getElementById('og-title').content = title;
+            document.getElementById('og-description').content = description;
+            document.getElementById('og-url').content = url;
+            document.getElementById('og-image').content = imageUrl;
+
+            // Update Twitter tags
+            document.getElementById('twitter-title').content = title;
+            document.getElementById('twitter-description').content = description;
+            document.getElementById('twitter-url').content = url;
+            document.getElementById('twitter-image').content = imageUrl;
+        }
+
+        // ============================================
+        // SHOW ERROR STATE
+        // ============================================
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        fetchItem();
+    </script>
+</body>
+</html>
