@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payout Setup Complete - Rotation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(165deg, #FFF8F8 0%, #FAE5E5 50%, #F2C4C4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 48px 40px;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(232, 160, 160, 0.2), 0 8px 24px rgba(216, 138, 138, 0.1);
+            border: 1px solid #F5D5D5;
+        }
+        .icon {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(145deg, #E8A0A0 0%, #D88A8A 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            box-shadow: 0 8px 24px rgba(216, 138, 138, 0.35);
+        }
+        .icon svg {
+            width: 44px;
+            height: 44px;
+            fill: white;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #5C4040;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+        p {
+            color: #9A7A7A;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(145deg, #E8A0A0 0%, #D88A8A 100%);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 16px rgba(216, 138, 138, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(216, 138, 138, 0.4);
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .note {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #9A7A7A;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h1>You're all set!</h1>
+        <p>Your payout account is ready. You can now withdraw your earnings directly to your bank account.</p>
+        <a href="rotation://profile" class="btn">Back to Rotation</a>
+        <p class="note">If the button doesn't work, just open the Rotation app.</p>
+    </div>
+</body>
+</html>

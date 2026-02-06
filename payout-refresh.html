@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continue Setup - Rotation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(165deg, #FFF8F8 0%, #FAE5E5 50%, #F2C4C4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 48px 40px;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(232, 160, 160, 0.2), 0 8px 24px rgba(216, 138, 138, 0.1);
+            border: 1px solid #F5D5D5;
+        }
+        .icon {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(145deg, #F2C4C4 0%, #E8A0A0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            box-shadow: 0 8px 24px rgba(232, 160, 160, 0.35);
+        }
+        .icon svg {
+            width: 44px;
+            height: 44px;
+            fill: white;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #5C4040;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+        p {
+            color: #9A7A7A;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(145deg, #E8A0A0 0%, #D88A8A 100%);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 16px rgba(216, 138, 138, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(216, 138, 138, 0.4);
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .note {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #9A7A7A;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></svg>
+        </div>
+        <h1>Almost there!</h1>
+        <p>Your session expired or something went wrong. Open the app to try again - your progress has been saved.</p>
+        <a href="rotation://profile" class="btn">Open Rotation</a>
+        <p class="note">Tap "Set Up Payout Account" to continue where you left off.</p>
+    </div>
+</body>
+</html>
